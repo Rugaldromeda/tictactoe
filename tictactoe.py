@@ -5,11 +5,13 @@ dict_tabuleiro = [
     for i in range(9)
 ]
 
-fim = None
+jogo_finalizado = None
 
 def checkFimJogo():
-    fim = all(item["played"]==True for item in dict_tabuleiro)
-    return fim
+    finalizado = all(item["played"]==True for item in dict_tabuleiro)
+    if finalizado == True:
+        print("Empate!")
+    return finalizado
     
 def vezJogador(jogada,vezJogador,jogador):
     if dict_tabuleiro[jogada-1]["played"] == False:
@@ -29,15 +31,14 @@ def checkVitoria(list, player):
 
 def verificaIndices(player):
     global dict_tabuleiro
-    global fim
+    global jogo_finalizado
     indVictory = [[0,1,2],[3,4,5],[6,7,8],[0,4,8],[6,4,2],[0,3,6],[1,4,7],[2,5,8]]
     for i in range(len(indVictory)):
         indVic = indVictory[i]
         victory = checkVitoria(indVic,player)
         if victory == True:
             print("Jogador {} ganhou!".format(player))
-            vitoria = True
-            fim = True
+            jogo_finalizado = True
             break
 
 def atualizaTabuleiro():
@@ -53,12 +54,13 @@ def jogando():
 
     vezJogada = None
     choicePlayer1 = int(input("Jogador 1, por favor escolha sua peça! \n 1 - X  2 - o :"))
+
     if choicePlayer1 == 1:
         vezJogada = "X"
     else:
         vezJogada = "o"
 
-    print("Você escolheu a peça {}!".format(vezJogada))
+    print("Você escolheu a peça {}! \n Escolha um número pra indicar onde quer jogar".format(vezJogada))
 
     atualizaTabuleiro()
     global dict_tabuleiro
@@ -70,6 +72,7 @@ def jogando():
         
         print("Jogador {}!".format(jogador))
         jogada = int(input(" Insira sua jogada:  "))
+
         os.system('cls') or None
         global tabuleiro_pecas
         
@@ -89,7 +92,7 @@ def jogando():
         
         checkFim = checkFimJogo()
         verificaIndices(jogador)
-        if fim == True:
+        if jogo_finalizado == True:
             checkFim = True
             
     print("Fim de jogo!")
